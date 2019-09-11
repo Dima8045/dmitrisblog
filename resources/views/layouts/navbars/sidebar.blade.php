@@ -105,7 +105,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="{{ route('post.index') }}">
                         <i class="fas fa-th-large text-blue"></i> {{ __('Posts') }}
                     </a>
                 </li>
