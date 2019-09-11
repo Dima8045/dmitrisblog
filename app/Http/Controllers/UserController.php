@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
+use App\Http\Services\AvatarGenerator;
 
 class UserController extends Controller
 {
@@ -38,7 +39,13 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $model)
     {
-        $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
+        $avatar = new AvatarGenerator(strtoupper(substr($request->name, 0, 1)));
+        $image = $avatar->creteImage();
+
+        $model->create($request->merge([
+            'password' => Hash::make($request->get('password')),
+            'avatar' => $image
+            ])->all());
 
         return redirect()->route('user.index')->withStatus(__('User successfully created.'));
     }
