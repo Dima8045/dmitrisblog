@@ -26,14 +26,14 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <form method="post" action="{{ route('post.update', $post) }}" autocomplete="off" enctype="multipart/form-data">
+                        <form method="post" action="{{ route('post.store') }}" autocomplete="off" enctype="multipart/form-data">
                             @csrf
-                            @method('put')
+                            @method('post')
 
                             <div class="pl-lg-4">
                                 <div class="form-group{{ $errors->has('title') ? ' has-danger' : '' }}">
                                     <label class="form-control-label" for="input-title">{{ __('Title') }}</label>
-                                    <input type="text" name="title" id="input-title" class="form-control form-control-alternative{{ $errors->has('title') ? ' is-invalid' : '' }}" placeholder="{{ __('Title') }}" value="{{ old('title', $post->title) }}"  autofocus>
+                                    <input type="text" name="title" id="input-title" class="form-control form-control-alternative{{ $errors->has('title') ? ' is-invalid' : '' }}" placeholder="{{ __('Title') }}" value="{{ old('title') }}"  autofocus>
 
                                     @if ($errors->has('title'))
                                         <span class="invalid-feedback" role="alert">
@@ -46,7 +46,7 @@
                                         <div class="form-group{{ $errors->has('content') ? ' has-danger' : '' }}">
                                             <label class="form-control-label" for="content">{{ __('Content') }}</label>
                                             <textarea type="text" name="content" id="content" class="form-control form-control-alternative{{ $errors->has('content') ? ' is-invalid' : '' }}" placeholder="{{ __('Content') }}" rows="20" required>
-                                                {{ old('content', $post->content) }}
+                                                {{ old('content') }}
                                             </textarea>
                                             @if ($errors->has('content'))
                                                 <span class="invalid-feedback" role="alert">
@@ -58,20 +58,21 @@
                                             <label class="form-control-label" for="tags">{{ __('Tags') }}</label>
                                             <select multiple="" name="tags[]" id="tags" class="form-control form-control-alternative{{ $errors->has('tags') ? ' is-invalid' : '' }}" placeholder="{{ __('Tags') }}" value="">
                                                 @foreach($tags as $tag)
-                                                    <option value="{{ $tag->id }}" @foreach($post->tags as $pTag) @if($pTag->id == $tag->id) selected   @endif @endforeach>{{ $tag->name }}</option>
+                                                    <option value="{{ $tag->id }}" >{{ $tag->name }}</option>
                                                 @endforeach
                                             </select>
-                                        </div>
-                                        <div class="form-group{{ $errors->has('category_id') ? ' has-danger' : '' }}">
-                                            <label class="form-control-label" for="category_id">{{ __('Category') }}</label>
-                                            <select name="category_id" id="category_id" class="form-control form-control-alternative{{ $errors->has('category_id') ? ' is-invalid' : '' }}" placeholder="{{ __('Category') }}" value="">
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" @if($post->category_id == $category->id) selected   @endif >{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
+                                            <div class="form-group{{ $errors->has('category_id') ? ' has-danger' : '' }}">
+                                                <label class="form-control-label" for="category_id">{{ __('Category') }}</label>
+                                                <select name="category_id" id="category_id" class="form-control form-control-alternative{{ $errors->has('category_id') ? ' is-invalid' : '' }}" placeholder="{{ __('Category') }}" value="">
+                                                    @foreach($categories as $category)
+                                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
                                         </div>
                                         <div class="custom-control custom-control-alternative custom-checkbox mb-3">
-                                            <input class="custom-control-input" id="published" type="checkbox" name="published" value="1" @if ( old('published', $post->published) == 1) checked  @endif>
+                                            <input class="custom-control-input" id="published" type="checkbox" name="published" value="1" >
                                             <label class="custom-control-label" for="published">{{ __('Published') }}</label>
                                         </div>
                                     </div>
@@ -79,7 +80,7 @@
                                         <label class="form-control-label" for="image">{{ __('Image') }}</label>
                                         <div class="card">
                                             <div class="card-body">
-                                                <img class="card-img-top" src="@if($post->image) {{ '/storage/posts/' . $post->image }} @else https://myfiles.kz/Pics/RozaVetrov-wp/uploads/2018/03/nowimage.jpg @endif" alt="Card image cap">
+                                                <img class="card-img-top" src="https://myfiles.kz/Pics/RozaVetrov-wp/uploads/2018/03/nowimage.jpg" alt="Card image cap">
                                             </div>
                                             <div class="card-footer">
                                                 <div class="form-group">
@@ -97,9 +98,7 @@
                                 </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-success mt-4">{{ __('Save') }}</button>
-                                    @if(!$post->published)
-                                        <a href="{{ redirect()->back() }}" class="btn btn-info mt-4">{{ __('Cancel') }}</a>
-                                    @endif
+                                    <a href="{{ route('post.index') }}" class="btn btn-info mt-4">{{ __('Cancel') }}</a>
                                 </div>
                             </div>
                         </form>

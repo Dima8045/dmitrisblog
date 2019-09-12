@@ -18,7 +18,7 @@ class CreteTablePosts extends Migration
             $table->string('title')->nullable();
             $table->text('content')->nullable();
             $table->string('image')->nullable();
-            $table->dateTime('published');
+            $table->boolean('published')->default(false);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->timestamps();

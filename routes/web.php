@@ -11,9 +11,9 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+Route::get('/', 'PostController@index')->name('welcome');
+Route::post('/', 'PostController@index')->name('welcome');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');

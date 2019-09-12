@@ -18,14 +18,14 @@
                         </div>
                     </div>
                     <div class="col-12">
-                            @if (session('status'))
-                                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                    {{ session('status') }}
-                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                            @endif
+                        @if (session('status'))
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                {{ session('status') }}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        @endif
                         </div>
                         <div class="table-responsive">
                             <table class="table align-items-center table-flush">
@@ -43,38 +43,29 @@
                                     <tr>
                                         <td>
                                             <a href="{{ route('post.show', $post) }}"></a>{{ $post->title }}</td>
-                                        <td>{{ $post->published }}</td>
-                                        <td>{{ $post->created_at->format('d/m/Y H:i') }}</td>
+                                        <td>
+                                            @if($post->published)
+                                                <span class="badge badge-success">Published</span>
+                                            @else
+                                                <span class="badge badge-default">Unpublished</span>
+                                            @endif
+                                        </td>
+                                        <td>{{ $post->user->name }}</td>
                                         <td class="text-right ">
                                             @if ($post->id != auth()->id() || $post->user_id == auth()->id())
 
                                             <a href="{{ route('post.create') }}" class="btn btn-sm btn-primary">{{ __('Add') }}</a>
-                                            <a href="{{ route('post.edit', $post) }}" class="btn btn-sm btn-warning">{{ __('Edit') }}</a>
-                                            <form class="d-inline" action="{{ route('post.destroy', $post) }}" method="post">
-                                                <button type="button" class="btn btn-sm btn-danger" onclick="confirm('{{ __("Are you sure you want to delete this post?") }}') ? this.parentElement.submit() : ''">
-                                                    {{ __('Delete') }}
-                                                </button>
-                                            </form>
+                                                @can(['update-post', 'delete-post'], $post)
+                                                <a href="{{ route('post.edit', $post) }}" class="btn btn-sm btn-warning">{{ __('Edit') }}</a>
+                                                <form class="d-inline" action="{{ route('post.destroy', $post->id) }}" method="post">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="button" class="btn btn-sm btn-danger" onclick="confirm('{{ __("Are you sure you want to delete this post?") }}') ? this.parentElement.submit() : ''">
+                                                        {{ __('Delete') }}
+                                                    </button>
+                                                </form>
+                                                @endcan
                                             @endif
-                                            <div class="dropdown">
-                                                <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </a>
-                                                <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                                                    @if ($post->id != auth()->id() || $post->user_id == auth()->id())
-                                                        <form action="{{ route('post.destroy', $post) }}" method="post">
-                                                            @csrf
-                                                            @method('delete')
-                                                            <a class="dropdown-item" href="{{ route('post.edit', $post) }}">{{ __('Edit') }}</a>
-                                                            <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this post?") }}') ? this.parentElement.submit() : ''">
-                                                                {{ __('Delete') }}
-                                                            </button>
-                                                        </form>
-                                                    @else
-                                                        <a class="dropdown-item" href="{{ route('profile.edit') }}">{{ __('Edit') }}</a>
-                                                    @endif
-                                                </div>
-                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

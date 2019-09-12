@@ -10,7 +10,7 @@ $factory->define(Post::class, function (Faker $faker) {
         'title' => $faker->title,
         'content' => $faker->realText(700),
         'image' => $faker->imageUrl(800, 600, 'cats', true, 'Faker', true),
-        'published' => $faker->dateTime('now'),
+        'published' => $faker->boolean,
         'category_id' => random_int(1,3),
         'user_id' => random_int(1,5),
     ];

@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Tag;
 use App\User;
 use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Services\AvatarGenerator;
+use App\Http\Services\AvatarService;
 
 class UserController extends Controller
 {
@@ -40,7 +39,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $model)
     {
-        $avatar = new AvatarGenerator(strtoupper(substr($request->name, 0, 1)));
+        $avatar = new AvatarService(strtoupper(substr($request->name, 0, 1)));
         $image = $avatar->creteImage();
 
         $model->create($request->merge([

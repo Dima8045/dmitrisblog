@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Services\AvatarGenerator;
+use App\Http\Services\AvatarService;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -64,7 +64,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $avatar = new AvatarGenerator(strtoupper(substr($data['name'], 0, 1)));
+        $avatar = new AvatarService(strtoupper(substr($data['name'], 0, 1)));
         $image = $avatar->creteImage();
 
         return User::create([

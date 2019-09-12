@@ -7,10 +7,10 @@ use App\Helpers\StorageHelper;
 use PHPImageWorkshop\ImageWorkshop;
 
 /**
- * Class AvatarGenerator
+ * Class AvatarService
  * @package App\Http\Services
  */
-class AvatarGenerator
+class AvatarService
 {
     /**
      * @var $backgroundLayer;
@@ -45,7 +45,7 @@ class AvatarGenerator
 
 
     /**
-     * AvatarGenerator constructor.
+     * AvatarService constructor.
      * @param $text
      */
     public function __construct(string $text)
