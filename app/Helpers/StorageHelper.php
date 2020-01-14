@@ -3,9 +3,7 @@
 namespace App\Helpers;
 
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Illuminate\Http\File;
 
 /**
  * Class StorageHelper
